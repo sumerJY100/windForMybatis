@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nw.dao.ULogMapper">
+    <resultMap id="BaseResultMap" type="com.nw.model.ULog">
+        <constructor>
+            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="l_user_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="l_log_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="l_loginOrlogOut" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="l_note" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, l_user_id, l_log_time, l_loginOrlogOut, l_note
+  </sql>
+    <insert id="insertSelective" parameterType="com.nw.model.ULog">
+        insert into u_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="lUserId != null">
+                l_user_id,
+            </if>
+            <if test="lLogTime != null">
+                l_log_time,
+            </if>
+            <if test="lLoginorlogout != null">
+                l_loginOrlogOut,
+            </if>
+            <if test="lNote != null">
+                l_note,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="lUserId != null">
+                #{lUserId,jdbcType=BIGINT},
+            </if>
+            <if test="lLogTime != null">
+                #{lLogTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lLoginorlogout != null">
+                #{lLoginorlogout,jdbcType=INTEGER},
+            </if>
+            <if test="lNote != null">
+                #{lNote,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.nw.model.ULog">
+        update u_log
+        <set>
+            <if test="lUserId != null">
+                l_user_id = #{lUserId,jdbcType=BIGINT},
+            </if>
+            <if test="lLogTime != null">
+                l_log_time = #{lLogTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lLoginorlogout != null">
+                l_loginOrlogOut = #{lLoginorlogout,jdbcType=INTEGER},
+            </if>
+            <if test="lNote != null">
+                l_note = #{lNote,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
