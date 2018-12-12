@@ -18,8 +18,16 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ *
+ *
  * @ClassName WriteDataMain
- * @Description TODO
+ * @Description 读取历史数据库的内容，写入excel文件
+ *  文件存放位置：D盘
+ *  文件命名规则：
+ *      1、每天一个文件
+ *      2、文件名称：例如，20磨11月12日-11月13日
+ *  存储文件使用多线程进行存储
+ *  读取数据库数据使用单线程进行
  * @Author jiangyong xia
  * @Date 18/11/28 14:37
  * @Version 1.0
