@@ -7,7 +7,9 @@
     <settings>
         <setting name="lazyLoadingEnabled" value="true"/>
         <setting name="aggressiveLazyLoading" value="false"/>
-        <setting name="useGeneratedKeys" value="true"/>
+        <!--设置此参数以后，批量增加会出现一个异常信息Error getting generated key or setting result to parameter object.-->
+        <!--具体信息可以参照https://my.oschina.net/MrBamboo/blog/882873-->
+        <!--<setting name="useGeneratedKeys" value="true"/>-->
 
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
@@ -47,5 +49,11 @@
         <mapper class="com.nw.dao.CoalPipingHistoryMillBMapper"/>
         <mapper class="com.nw.dao.CoalPipingHistoryMillCMapper"/>
         <mapper class="com.nw.dao.CoalPipingHistoryMillDMapper"/>
+        <mapper class="com.nw.dao.H000Mapper"/>
+        <mapper class="com.nw.dao.H074Mapper"/>
+        <mapper class="com.nw.dao.H075Mapper"/>
+        <mapper class="com.nw.dao.H076Mapper"/>
+        <mapper class="com.nw.dao.H077Mapper"/>
+        <mapper class="com.nw.dao.H199Mapper"/>
     </mappers>
 </configuration>
