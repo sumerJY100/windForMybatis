@@ -1,7 +1,9 @@
 package com.nw.main;
 
 import com.nw.dao.H000Mapper;
+import com.nw.dao.H199Mapper;
 import com.nw.model.H000;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -16,6 +18,8 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,21 +44,31 @@ import java.util.List;
 public class WriteDCSHistoryDataFromExcelToDBBatchInsertAndReflect {
 
     /**
-     * @Description
-     * @Author jiangyong xia
-     * @Date 15:45 18/12/12
-     * @Param
-     * @return
+     * @description
+     * @author jiangyong xia
+     * @date 15:45 18/12/12
+     * @param args args
+     * @Return void
      **/
     public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         WriteDCSHistoryDataFromExcelToDBBatchInsertAndReflect w = new WriteDCSHistoryDataFromExcelToDBBatchInsertAndReflect();
         w.init();
         //删除h000所有记录
-//        w.deleteAll("H199","deleteAll");
+        w.deleteAll("H199","deleteAll");
         //读取excel数据，录入到数据库中
 //        w.readExcelDataToDB("mw","h000");
         w.readExcelDataToDB("mw","H199","insertBatch");
+        //磨煤机磨煤量数据
+        /*
+        w.readExcelDataToDB("10磨磨煤量","H074","insertBatch");
+        w.readExcelDataToDB("20磨磨煤量","H075","insertBatch");
+        w.readExcelDataToDB("30磨磨煤量","H076","insertBatch");
+        w.readExcelDataToDB("40磨磨煤量","H077","insertBatch");
+        */
     }
+
+
+
 
 
     private SqlSessionFactory sqlSessionFactory;
@@ -111,7 +125,7 @@ public class WriteDCSHistoryDataFromExcelToDBBatchInsertAndReflect {
                 Class mapperClass = Class.forName("com.nw.dao."+classSimpleName + "Mapper");
                 Method insertBatchMethod = mapperClass.getMethod(insertBatchMethodName,List.class);
                 Object mapper = sqlSession.getMapper(mapperClass);
-
+                Instant instant01 = Instant.now();
                 while (true) {
                     Row row = sheet.getRow(rowNumBegin++);
                     if (null != row) {
@@ -124,10 +138,10 @@ public class WriteDCSHistoryDataFromExcelToDBBatchInsertAndReflect {
                                 setVMethod.invoke(tempObj,value.floatValue()*100);
                                 setVTimeMethod.invoke(tempObj,new Timestamp(date.getTime()));
                                 hList.add(tempObj);
-                                if(hList.size() >100) {
+                                if(hList.size() >1000) {
                                     insertBatchMethod.invoke(mapper,hList);
 //                                    Thread.sleep(10);
-                                    System.out.println("保存");
+//                                    System.out.println("保存");
                                     hList.clear();
                                 }
                         } else {
@@ -140,6 +154,9 @@ public class WriteDCSHistoryDataFromExcelToDBBatchInsertAndReflect {
                 if(null != hList &&hList.size() > 0){
                     insertBatchMethod.invoke(mapper,hList);
                 }
+                Instant instant02 = Instant.now();
+                Duration duration = Duration.between(instant01,instant02);
+                System.out.println("时间：" + duration.getSeconds());
             }
             System.out.println(sheetOrFileName +",文件读取，并录入结束");
         } catch (Exception e) {
